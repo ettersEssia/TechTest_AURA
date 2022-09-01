@@ -32,5 +32,9 @@ def home ():
 @app.route('/profile/')
 @login_required
 def dashboard ():
-    # >>> need cnx with DB to get all registered user
     return render_template('dashboard.html')
+
+@app.route('/list-users/', methods=['GET'])
+def list_users():
+    users = db.users.find({})
+    return render_template('list-users.html', users=users)

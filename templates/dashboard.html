@@ -15,8 +15,11 @@
             <p>
                 <strong>ID:</strong> {{session['user']['_id']}} <br>
                 <strong>Name:</strong> {{session['user']['name']}} <br>
-                <strong>Email:</strong> {{session['user']['Email']}} <br>
+                <strong>Email:</strong> {{session['user']['email']}} <br>
             </p>
+           <div class="center">
+                <a href="/list-users" class="btn btn--secondary">List Users</a>
+            </div>
         </div>
     </div>
 {% endblock content %}

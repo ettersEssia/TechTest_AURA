@@ -17,12 +17,11 @@ class User:
 
         # Create the user object
         user = {
-            "_id": uuid.uuid4().hex,
+            "_id"  : uuid.uuid4().hex,
             "name" : request.form['name'],
-            "email" : request.form['email'],
-            "pwd": request.form['pwd']
+            "email": request.form['email'],
+            "pwd"  : request.form['pwd']
         }
-
         #encrypt the pwd
         user['pwd'] = pbkdf2_sha256.encrypt(user['pwd'])
 
@@ -30,12 +29,22 @@ class User:
         if db.users.find_one({"email": user['email']}):
             return jsonify({"error": "Email adress already in use"}), 400
         
-        #add user to our users collection 
+        #add user to our users collection and start a new session 
         if db.users.insert_one(user):
             return self.start_session(user)
 
         return jsonify({"error": "Signup failed"}),400
 
+    def login(self):
+
+        #get the user from DB which have the email adress sent from the frontend
+        user = db.users.find_one({"email": request.form['email']})
+
+        if user and pbkdf2_sha256.verify(request.form['pwd'], user['pwd']):
+            return self.start_session(user)
+        
+        return jsonify({"error": "Invalid email or password"}),400
+    
     def signout(self):
         session.clear()
         return redirect('/')

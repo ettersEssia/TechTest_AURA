@@ -12,9 +12,6 @@ load_dotenv()
 
 app = Flask(__name__)
 
-if __name__ == "__main__":
-    app.run(debug=(os.environ['DEBUG'] == 'True'))
-
 # >>> To manipulate the sessions with flask we need to configure the secret key
 # Use the envirement variable with os:
 app.secret_key = os.environ['SECRET_KEY']
@@ -83,4 +80,7 @@ def send_money():
         db.users.update_one({"_id": session['user']['_id']},{"$set":{"solde":solde}})
 
     return render_template('send-money.html', users=users) 
-
+# app running with python app.py
+# but in our case we run our application by setting the FLASK_APP in cmd, then we execute the command 'flask run'
+# if __name__ == "__main__":
+#     app.run(debug=True)

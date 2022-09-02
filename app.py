@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect
+from flask import Flask, render_template, session, redirect, request
 from functools import wraps
 import pymongo
 # >>> to get the envirment variable named 'SECRET_KEY' (configuré auparavant sur votre pc)
@@ -8,7 +8,7 @@ app = Flask(__name__)
 # >>> To manipulate the sessions with flask we need to configure the secret key
 app.secret_key = os.environ.get('SECRET_KEY')
 
-# >>> DB configuration
+# >>> DB configuration/connection
 client = pymongo.MongoClient('localhost', 27017)
 db = client.SmoneyDB
 
@@ -34,7 +34,38 @@ def home ():
 def dashboard ():
     return render_template('dashboard.html')
 
+@app.route("/show-user-profile/<id>")
+def show_profile(id):
+    user = db.users.find_one({"_id": id})
+    return render_template("show-user.html", user=user)
+
 @app.route('/list-users/', methods=['GET'])
+@login_required
+# this method is trigged when we try to access to the url above 
 def list_users():
     users = db.users.find({})
     return render_template('list-users.html', users=users)
+
+@app.route('/send-money/', methods=['GET', 'POST'])
+@login_required
+# this method is trigged when we try to access to the url above 
+def send_money():
+    users = db.users.find({})
+    message = ""
+    if request.method == 'GET':
+        message=""
+    elif request.method == 'POST':
+        # get user from DB to whom we will send money
+        user = db.users.find_one({"email": request.form['email']})
+        
+        # Ubdate his balance
+        solde = user['solde'] + int(request.form['solde'])
+        db.users.update_one({"_id": user['_id']},{"$set":{"solde":solde}})
+        
+        # Ubdate the balance of the user who sent the money
+        solde = session['user']['solde'] - int(request.form['solde'])
+        db.users.update_one({"_id": session['user']['_id']},{"$set":{"solde":solde}})
+
+        message = ""
+    
+    return render_template('send-money.html', users=users, message=message) 

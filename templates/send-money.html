@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="card-wrapper">
+        <div class="card card--wide center">
+            <form action="/send-money" method='POST'>
+                {# On peut recuperer le solde à envoyer en backend car on la sauvegardé dans request.form #}
+                <input type="number" name="solde" id="solde" min="1" max="{{session['user'].solde}}" value="{{request.form['solde']}}">
+                {# Même chose pour la récupération/envoi de l'email on nomme notre tag select comme suit et l'envoi grâce au flask request#}
+                <select name="email" value = "{{request.form['email']}}">
+                    <optgroup label="E-mail" >
+                        {% for user in users %}
+                            <option  value="{{user.email}}">{{user.email}}</option>
+                        {% endfor %}
+                    </optgroup>
+                </select>
+                {# with submit data will be send to action url #}
+                <input type="submit" value="Send Money" class="btn">
+            </form>
+        </div>
+    </div>
+{% endblock content %}

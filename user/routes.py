@@ -1,4 +1,3 @@
-import imp
 from flask import Flask, request, render_template, redirect
 #from the file app
 from app import app
@@ -15,4 +14,9 @@ def signout():
 
 @app.route('/login/', methods=['POST'])
 def login():
-    return User().login()    
+    return User().login()  
+
+@app.route('/change-password/', methods=['POST'])
+def changepwd():
+    return User().changepwd()
+   

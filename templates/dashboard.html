@@ -7,18 +7,29 @@
             </h1>
             <p class="center">You are currently logged in</p>
             <div class="center">
+                
                 <a href="/signout" class="btn btn--secondary">Sign Out</a>
+                <a href="/send-money" class="btn btn--secondary">Send money</a>
             </div>
         </div>
         <div class="card">
             <h2 class="center">Your Info</h2>
             <p>
+                {# once the flask session is open, you will have access to the data saved in it at any location in the project #}
+                    {#until we clear it or the browser closes #}
                 <strong>ID:</strong> {{session['user']['_id']}} <br>
                 <strong>Name:</strong> {{session['user']['name']}} <br>
+                <strong>Solde:</strong> {{session['user']['solde']}} <br>
                 <strong>Email:</strong> {{session['user']['email']}} <br>
             </p>
            <div class="center">
                 <a href="/list-users" class="btn btn--secondary">List Users</a>
+            </div>
+            <div class="center">
+                <form action="/change-password" method='POST'>
+                    <input type="text" name='pwd' value="{{request.form['pwd']}}">
+                    <input type="submit" value="Change password" class="btn btn--danger">
+                </form>
             </div>
         </div>
     </div>

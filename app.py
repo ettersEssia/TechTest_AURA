@@ -1,15 +1,25 @@
 from flask import Flask, render_template, session, redirect, request
 from functools import wraps
 import pymongo
-# >>> to get the envirment variable named 'SECRET_KEY' (configuré auparavant sur votre pc)
+
+
+from dotenv import load_dotenv
+
+# >>> to get the envirment variable named 'SECRET_KEY' (configuré auparavant sur votre fichier .env)
 import os
+
+# Load config from a .env file:
+load_dotenv()
 
 app = Flask(__name__)
 # >>> To manipulate the sessions with flask we need to configure the secret key
-app.secret_key = os.environ.get('SECRET_KEY')
+# Use the envirement variable with os:
+app.secret_key = os.environ['SECRET_KEY']
+
 
 # >>> DB configuration/connection
-client = pymongo.MongoClient('localhost', 27017)
+MONGODB_URI = os.environ['MONGODB_URI']
+client = pymongo.MongoClient(MONGODB_URI)
 db = client.SmoneyDB
 
 # >>> include routes of our user app 
@@ -25,30 +35,33 @@ def login_required(f):
             return redirect('/')
     return wrap
 
+# Since home page we can sign up or log in 
 @app.route('/')
 def home ():
     return render_template('home.html')
 
+# once we sign up and this new user is connected and his dashboard/profile will be displayed
 @app.route('/profile/')
 @login_required
 def dashboard ():
     return render_template('dashboard.html')
 
+# Display Info for a specific user by clicking on his name in the list users page
 @app.route("/show-user-profile/<id>")
 def show_profile(id):
     user = db.users.find_one({"_id": id})
     return render_template("show-user.html", user=user)
 
+# list-users displayed either for a user log in or for "list-users" button
 @app.route('/list-users/', methods=['GET'])
 @login_required
-# this method is trigged when we try to access to the url above 
 def list_users():
     users = db.users.find({})
     return render_template('list-users.html', users=users)
 
 @app.route('/send-money/', methods=['GET', 'POST'])
 @login_required
-# this method is trigged when we try to access to the url above 
+# this method is trigged when a user click a "sen money" button 
 def send_money():
     users = db.users.find({})
     message = ""

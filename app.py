@@ -67,7 +67,7 @@ def send_money():
     users = db.users.find({})
     message = ""
     if request.method == 'GET':
-        message=""
+        return render_template('send-money.html', users=users)
     elif request.method == 'POST':
         # get user from DB to whom we will send money
         user = db.users.find_one({"email": request.form['email']})
@@ -80,9 +80,7 @@ def send_money():
         solde = session['user']['solde'] - int(request.form['solde'])
         db.users.update_one({"_id": session['user']['_id']},{"$set":{"solde":solde}})
 
-        message = ""
-    
-    return render_template('send-money.html', users=users, message=message) 
+    return render_template('send-money.html', users=users) 
 
 if __name__ == "__main__":
     app.run(debug=(os.environ['DEBUG'] == 'True'))

@@ -36,7 +36,7 @@ $("form[name=login_form").submit(function(e){
                                         data: data,
                                         dataType: "json",
                                         success: function(resp){
-                                                    // we redirect user to list-users 
+                                                    // After a user log in we redirect hom to the list-users 
                                                     window.location.href = "/list-users";
                                                 },
                                         error: function(resp){

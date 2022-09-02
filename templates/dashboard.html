@@ -22,12 +22,13 @@
                 <strong>Solde:</strong> {{session['user']['solde']}} <br>
                 <strong>Email:</strong> {{session['user']['email']}} <br>
             </p>
-           <div class="center">
+            <div class="center">
                 <a href="/list-users" class="btn btn--secondary">List Users</a>
             </div>
             <div class="center">
+                <p><strong>Do you want to change your password?</strong></p>
                 <form action="/change-password" method='POST'>
-                    <input type="text" name='pwd' value="{{request.form['pwd']}}">
+                    <input type="text" name='pwd' value="{{request.form['pwd']}}" placeholder="Enter a new password">
                     <input type="submit" value="Change password" class="btn btn--danger">
                 </form>
             </div>

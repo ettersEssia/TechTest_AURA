@@ -2,7 +2,6 @@ from flask import Flask, render_template, session, redirect, request
 from functools import wraps
 import pymongo
 
-
 from dotenv import load_dotenv
 
 # >>> to get the envirment variable named 'SECRET_KEY' (configuré auparavant sur votre fichier .env)
@@ -12,6 +11,8 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
+
+
 # >>> To manipulate the sessions with flask we need to configure the secret key
 # Use the envirement variable with os:
 app.secret_key = os.environ['SECRET_KEY']
@@ -82,3 +83,6 @@ def send_money():
         message = ""
     
     return render_template('send-money.html', users=users, message=message) 
+
+if __name__ == "__main__":
+    app.run(debug=(os.environ['DEBUG'] == 'True'))

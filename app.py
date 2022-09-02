@@ -12,6 +12,8 @@ load_dotenv()
 
 app = Flask(__name__)
 
+if __name__ == "__main__":
+    app.run(debug=(os.environ['DEBUG'] == 'True'))
 
 # >>> To manipulate the sessions with flask we need to configure the secret key
 # Use the envirement variable with os:
@@ -82,5 +84,3 @@ def send_money():
 
     return render_template('send-money.html', users=users) 
 
-if __name__ == "__main__":
-    app.run(debug=(os.environ['DEBUG'] == 'True'))

@@ -2,9 +2,10 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [N.B.](#Remember)
 
 ## General info
-This project is a simple application for user register, login and money sent.
+This project is a simple application for user register, login and send money.
 	
 ## Technologies
 Project is created with:

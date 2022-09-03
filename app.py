@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect, request
+from flask import Flask, render_template, session, redirect, request, url_for
 from functools import wraps
 import pymongo
 
@@ -19,8 +19,12 @@ app.secret_key = os.environ['SECRET_KEY']
 
 # >>> DB configuration/connection
 MONGODB_URI = os.environ['MONGODB_URI']
-client = pymongo.MongoClient(MONGODB_URI)
-db = client.SmoneyDB
+# client = pymongo.MongoClient(MONGODB_URI)
+try:
+    client = pymongo.MongoClient(MONGODB_URI)
+    db = client.SmoneyDB
+except:
+    print("Failed to connect to th data base")
 
 # >>> include routes of our user app 
 from user import routes
@@ -38,7 +42,15 @@ def login_required(f):
 # Since home page we can sign up or log in 
 @app.route('/')
 def home ():
-    return render_template('home.html')
+    # A user who is already logged in cannot create an account or log in to another account unless he logs out.
+    # il faut verifié si session est cré ou pas encore
+    if session.get('logged_in') == None:
+        return render_template('home.html')
+    elif not session['logged_in']  :
+        return render_template('home.html')
+    else:
+        return redirect(url_for('dashboard'))
+   
 
 # once we sign up and this new user is connected and his dashboard/profile will be displayed
 @app.route('/profile/')
@@ -69,7 +81,7 @@ def send_money():
         # get user from DB to whom we will send money
         user = db.users.find_one({"email": request.form['email']})
         
-        # Ubdate his balance
+        # updated the balance of the user receiving the money
         solde = user['solde'] + int(request.form['solde'])
         db.users.update_one({"_id": user['_id']},{"$set":{"solde":solde}})
         
@@ -77,7 +89,7 @@ def send_money():
         solde = session['user']['solde'] - int(request.form['solde'])
         db.users.update_one({"_id": session['user']['_id']},{"$set":{"solde":solde}})
 
-        # ubdate the session of user connected
+        # Ubdate the user session
         session['user'] = db.users.find_one({"email": session['user']['email']})
 
         return redirect('/profile')

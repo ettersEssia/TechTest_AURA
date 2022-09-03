@@ -64,10 +64,8 @@ def list_users():
 # This method is trigged when a user click a "sen money" button 
 def send_money():
     users = db.users.find({})
-    message = ""
-    if request.method == 'GET':
-        return render_template('send-money.html', users=users)
-    elif request.method == 'POST':
+    
+    if request.method == 'POST':
         # get user from DB to whom we will send money
         user = db.users.find_one({"email": request.form['email']})
         
@@ -78,6 +76,11 @@ def send_money():
         # Ubdate the balance of the user who sent the money
         solde = session['user']['solde'] - int(request.form['solde'])
         db.users.update_one({"_id": session['user']['_id']},{"$set":{"solde":solde}})
+
+        # ubdate the session of user connected
+        session['user'] = db.users.find_one({"email": session['user']['email']})
+
+        return redirect('/profile')
 
     return render_template('send-money.html', users=users) 
 

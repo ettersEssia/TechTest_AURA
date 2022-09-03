@@ -2,6 +2,14 @@
 {% block content %}
     <div class="card-wrapper">
         <div class="card card--wide center">
+            <h1>Send Money</h1>
+            {# If the user no longer wants to send money he can go back to his profile#}
+            <p>
+                <strong>you no longer want to send money?</strong><br>
+                Go back to your <a href="{{url_for('dashboard')}}">Profile</a> page.
+            </p>
+        </div>
+        <div class="card card--wide center">
             <form action="/send-money" method='POST'>
                 {# On peut recuperer le solde à envoyer en backend car on la sauvegardé dans request.form #}
                 <input type="number" name="solde" id="solde" min="1" max="{{session['user'].solde}}" value="{{request.form['solde']}}">
@@ -9,7 +17,10 @@
                 <select name="email" value = "{{request.form['email']}}">
                     <optgroup label="E-mail" >
                         {% for user in users %}
-                            <option  value="{{user.email}}">{{user.email}}</option>
+                        {# the if statement herre because coherently a user will not send money to himself from his account #}
+                            {% if session['user']['email'] != user['email'] %}
+                                <option  value="{{user.email}}">{{user.email}}</option>
+                            {% endif %}
                         {% endfor %}
                     </optgroup>
                 </select>

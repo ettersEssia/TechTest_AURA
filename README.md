@@ -2,7 +2,7 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [N.B.](#Remember)
+* [Look out!](#N.B.)
 
 ## General info
 This project is a simple application for user register, login and send money.

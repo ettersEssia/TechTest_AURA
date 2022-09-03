@@ -42,8 +42,8 @@ you just need to execute the script on run file
 ```
 $ ./run
 ```
-# Don't forget
-With Flask project we need to deel with virtual envirement so you should activate it before any installation above
+### Don't forget
+With Flask applications we need to deel with virtual envirement so you should activate it before any installation above
 
 ```
 $ path_env_folder/Scripts/activate

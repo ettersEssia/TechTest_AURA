@@ -24,6 +24,7 @@ $ pip install -r requirements.txt
 
 ```
 $ set FLASK_APP=app.py
+$ set MONGODB_URI="your_mongodb_uri"
 ```
 
 if you run this project locally

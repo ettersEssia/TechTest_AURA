@@ -22,9 +22,9 @@ MONGODB_URI = os.environ['MONGODB_URI']
 # client = pymongo.MongoClient(MONGODB_URI)
 try:
     client = pymongo.MongoClient(MONGODB_URI)
-    db = client.SmoneyDB
+    dataBase = client.SmoneyDB
 except:
-    print("Failed to connect to th data base")
+    print('Failed to connect to the data base')
 
 # >>> include routes of our user app 
 from user import routes
@@ -61,36 +61,36 @@ def dashboard ():
 # Display Info for a specific user by clicking on his name in the list users page
 @app.route("/show-user-profile/<id>")
 def show_profile(id):
-    user = db.users.find_one({"_id": id})
+    user = dataBase.users.find_one({"_id": id})
     return render_template("show-user.html", user=user)
 
 # list-users displayed either for a user log in or for "list-users" button
 @app.route('/list-users/', methods=['GET'])
 @login_required
 def list_users():
-    users = db.users.find({})
+    users = dataBase.users.find({})
     return render_template('list-users.html', users=users)
 
 @app.route('/send-money/', methods=['GET', 'POST'])
 @login_required
 # This method is trigged when a user click a "sen money" button 
 def send_money():
-    users = db.users.find({})
+    users = dataBase.users.find({})
     
     if request.method == 'POST':
         # get user from DB to whom we will send money
-        user = db.users.find_one({"email": request.form['email']})
+        user = dataBase.users.find_one({"email": request.form['email']})
         
         # updated the balance of the user receiving the money
         solde = user['solde'] + int(request.form['solde'])
-        db.users.update_one({"_id": user['_id']},{"$set":{"solde":solde}})
+        dataBase.users.update_one({"_id": user['_id']},{"$set":{"solde":solde}})
         
         # Ubdate the balance of the user who sent the money
         solde = session['user']['solde'] - int(request.form['solde'])
-        db.users.update_one({"_id": session['user']['_id']},{"$set":{"solde":solde}})
+        dataBase.users.update_one({"_id": session['user']['_id']},{"$set":{"solde":solde}})
 
         # Ubdate the user session
-        session['user'] = db.users.find_one({"email": session['user']['email']})
+        session['user'] = dataBase.users.find_one({"email": session['user']['email']})
 
         return redirect('/profile')
 

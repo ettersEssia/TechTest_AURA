@@ -3,12 +3,16 @@
     <div class="card-wrapper">
         <div class="card card--wide center">
             <h1>Users</h1>
-            <p>Go back to my <a href="{{url_for('dashboard')}}">Profile</a> page.</p>
+            <p>Go back to my <a href="{{url_for('dashboard')}}">Dashboard</a> page.</p>
         </div>
         
     </div>
+    <div class="card-wrapper">
     {% for user in users %}
-        <div class="card center"><a href="{{url_for('show_profile', id = user._id)}}">{{user.name}}</a></div>
+            <a class="card center" href="{{url_for('show_profile', id = user._id)}}">
+                {{user.name}}
+            </a>
     {% endfor %}
+    </div>
     
 {% endblock content %}

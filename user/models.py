@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, session, redirect
 # for password encription
 from passlib.hash import pbkdf2_sha256
-from app import db
+from app import dataBase
 import uuid
 
 # In this file we will create ou collection for th DB
@@ -29,19 +29,22 @@ class User:
         user['pwd'] = pbkdf2_sha256.encrypt(user['pwd'])
 
         #get sure to not have an existing email adress for another user
-        if db.users.find_one({"email": user['email']}):
+        if dataBase.users.find_one({"email": user['email']}):
             return jsonify({"error": "Email adress already in use"}), 400
         
         #add user to our users collection and start a new session 
-        if db.users.insert_one(user):
+        if dataBase.users.insert_one(user):
             return self.start_session(user)
 
         return jsonify({"error": "Signup failed"}),400
 
     def login(self):
-
+        user = False
         #get the user from DB which have the email adress sent from the frontend
-        user = db.users.find_one({"email": request.form['email']})
+        try:
+            user = dataBase.users.find_one({"email": request.form['email']})
+        except:
+            print('erreur lors de la recherche de l\'utilisateur ds la BD' )
 
         if user and pbkdf2_sha256.verify(request.form['pwd'], user['pwd']):
             return self.start_session(user)
@@ -50,7 +53,7 @@ class User:
     
     def changepwd(self):
         pwd = pbkdf2_sha256.encrypt(request.form['pwd'])
-        db.users.update_one({"_id": session['user']['_id']},{"$set":{"pwd":pwd}})
+        dataBase.users.update_one({"_id": session['user']['_id']},{"$set":{"pwd":pwd}})
         
         # after changing pwd we disconnect user and redirect him to home page
         session.clear()

@@ -12,9 +12,9 @@
 </head>
 <body>
     {% block content %}
-    {# filled by the extending templates  #}
+        {# it will be filled by the extending templates  #}
     {% endblock content %}
-    {#<script type = "text/javascript" src = "{{ url_for('static', filename = 'script.js') }}" ></script>#}
-    <script src="/static/js/scripts.js"></script> 
+    {# Serving static files #}
+    <script src="{{ url_for('static', filename='js/scripts.js')}}"></script>
 </body>
 </html>

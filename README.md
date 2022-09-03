@@ -20,7 +20,7 @@ To run this project, you have to install the packages according to the configura
 $ pip install -r requirements.txt
 ```
 
-# Then you set the envirement vars on windows
+### Then you set the envirement vars on windows
 
 ```
 $ set FLASK_APP=app.py
@@ -36,7 +36,7 @@ Finally
 ```
 $ flask run
 ```
-# On linux
+### On linux
 you just need to execute the script on run file
 
 ```

@@ -61,7 +61,7 @@ def list_users():
 
 @app.route('/send-money/', methods=['GET', 'POST'])
 @login_required
-# this method is trigged when a user click a "sen money" button 
+# This method is trigged when a user click a "sen money" button 
 def send_money():
     users = db.users.find({})
     message = ""
@@ -80,6 +80,7 @@ def send_money():
         db.users.update_one({"_id": session['user']['_id']},{"$set":{"solde":solde}})
 
     return render_template('send-money.html', users=users) 
+
 # app running with python app.py
 # but in our case we run our application by setting the FLASK_APP in cmd, then we execute the command 'flask run'
 # if __name__ == "__main__":

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head>
+<body>
+    <p class="error">
+        {% for message in get_flashed_messages() %}
+            {{message}}
+        {% endfor %}
+    </p>
+    <div class="card-wrapper">
+        <div class="card">
+            <h1 class="center">Log In</h1>
+            <form name="login_form" method="POST">
+                {# For csrf_token security#}
+                {{form.hidden_tag()}}
+                
+                {{form.email.label}}
+                {{form.email(class="field")}}
+    
+                {{form.password_hash.label}}
+                {{form.password_hash(class="field")}}
+    
+                {{form.submit(class="btn")}}
+                <a href="{{url_for('register')}}">Haven't signed up yet?</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+    
+    

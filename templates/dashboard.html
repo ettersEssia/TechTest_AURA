@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+<p class="error">
+    {% for message in get_flashed_messages() %}
+        {{message}}
+    {% endfor %}
+</p>
+{% block content %}
+    <div class="card-wrapper">
+        <div class="card">
+            <h2 class="center">Your Info</h2>
+            <p>
+                {# once the flask session is open, you will have access to the data saved in it at any location in the project #}
+                    {#until we clear it or the browser closes #}
+                <strong>ID:</strong> {{current_user.id}} <br>
+                <strong>Name:</strong> {{current_user.name}} <br>
+                <strong>Solde:</strong> {{current_user.solde}} <br>
+                <strong>Email:</strong> {{current_user.email}}<br>
+            </p>
+            <div class="center">
+                <p><strong>Do you want to change your password?</strong></p>
+                <form action="/change-password" method='POST'>
+                    <input type="text" name='pwd' value="{{request.form['pwd']}}" placeholder="Enter a new password">
+                    <input type="submit" value="Change password" class="btn btn--danger">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

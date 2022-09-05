@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p class="error">
+        {% for message in get_flashed_messages() %}
+            {{message}}
+        {% endfor %}
+    </p>
+    <div class="card-wrapper">
+    {% for user in listUsers %}
+            <a class="card center" href="{{url_for('show_profile', id = user.id)}}">
+                {{user.name}}
+            </a>
+    {% endfor %}
+    </div>
+    
+{% endblock content %}

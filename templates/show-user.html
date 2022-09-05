@@ -7,7 +7,7 @@
                 Dashboard
             </h1>
             {# veriffier si on a unne seesion ouverte avant de passer à la verification de l'identité de celui qui a fait l'appel à cet url#}
-            {% if session['logged_in'] and session['user']._id == user._id  %}
+            {% if current_user.id == user.id %}
                 <p class="center">You are currently logged in</p>
                 <div class="center">
                     <a href="/signout" class="btn btn--secondary">Sign Out</a>
@@ -20,10 +20,10 @@
         <div class="card">
             <h2 class="center">Your Info</h2>
             <p>
-                <strong>ID:</strong> {{user._id}} <br>
+                <strong>ID:</strong> {{user.id}} <br>
                 <strong>Name:</strong> {{user.name}} <br>
                 {# On verifie l'identité de celui qui a fait appel à cet url pour afficher/cacher le solde #}
-                {% if session['logged_in'] and user._id == session['user']['_id'] %}
+                {% if current_user.id == user.id %}
                     <strong>Solde:</strong> {{user.solde}} <br>
                 {% endif %}
                 <strong>Email:</strong> {{user.email}} <br>

@@ -39,6 +39,7 @@ def load_user(user_id):
 
 # routes of our app
 
+#start a session when user log in so that when he get to their profile we can output some of his info 
 @app.route('/')
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -68,6 +69,7 @@ def logout():
     flash('you just disconnected')
     return redirect('/login')
 
+# User register will automaticly connect and redirect to his dashboard
 @app.route('/registration/', methods=['GET', 'POST'])
 def register():
     user = None
@@ -87,6 +89,7 @@ def register():
 
     return render_template('register.html', form=form, user=user)
 
+# Change a user's password
 @app.route('/change-password/', methods=['POST'])
 def changepwd():
     print(request.form['pwd'])
@@ -112,7 +115,7 @@ def list_users():
 # Display Info for a specific user by clicking on his name in the list users page
 @app.route('/show-user-profile/<id>')
 def show_profile(id):
-    user = Users.objects(_id=id).first()
+    user = Users.objects(id=id).first()
     return render_template('show-user.html', user=user)
 
 @app.route('/send-money/', methods=['GET', 'POST'])
@@ -120,7 +123,6 @@ def show_profile(id):
 # This method is trigged when a user click a "sen money" button 
 def send_money():
     if request.method == 'POST':
-        print('hereeee')
 
         # collect the amount of th transaction
         montant = int(request.form['solde'])
@@ -138,10 +140,6 @@ def send_money():
         # Save the transaction on the DB table
         transaction = Transactions(user_send=current_user.username, user_receive=userReceive.username, amount=montant)
         transaction.save()
-
-        # Update user session
-        # session['user'] = toDict(userSender)
-        # print(userSender._id)
 
         return redirect('/list-users')
 

@@ -1,39 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Page</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/normalize.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-    <div class="card-wrapper">
-        <div class="card">
-            <h1 class="center">Create an account</h1>
-            <form   name="signup_form" method="POST">
-                {{form.hidden_tag()}}
-                
-                {{form.name.label}}
-                {{form.name(class="field")}}
+{% extends 'base.html' %}
+{% block content %}
+<div class="card-wrapper">
+    <div class="card">
+        <h1 class="center">Create an account</h1>
+        <form   name="signup_form" method="POST">
+            {{form.hidden_tag()}}
+            
+            {{form.name.label}}
+            {{form.name(class="field")}}
 
-                {{form.username.label}}
-                {{form.username(class="field")}}
-        
-                {{form.email.label}}
-                {{form.email(class="field")}}
-        
-                {{form.password_hash.label}}
-                {{form.password_hash(class="field")}}
+            {{form.username.label}}
+            {{form.username(class="field")}}
+    
+            {{form.email.label}}
+            {{form.email(class="field")}}
+    
+            {{form.password_hash.label}}
+            {{form.password_hash(class="field")}}
 
-                {{form.password_hash2.label}}
-                {{form.password_hash2(class="field")}}
-        
-                {{form.submit(class="btn")}}
-                <a href="{{url_for('login')}}">Already signed up?</a>
-            </form>
-        </div>
+            {{form.password_hash2.label}}
+            {{form.password_hash2(class="field")}}
+    
+            {{form.submit(class="btn")}}
+            <a href="{{url_for('login')}}">Already signed up?</a>
+        </form>
     </div>
-</body>
-</html>
+</div>
+{% endblock content %}

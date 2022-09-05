@@ -39,6 +39,7 @@ To make migration
 $ mongoengine_migrate makemigrations -m manage.db
 $ mongoengine_migrate migrate
 ```
+In this project we use dotenv, so you have to create a .env file in which you save all your sensitive Info like your secret key.
 
 Finally
 

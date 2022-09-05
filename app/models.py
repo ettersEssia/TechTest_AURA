@@ -9,7 +9,7 @@ import uuid
 
 # user table
 # transaction tale
-class Transactions(Document):
+class Transactions(Document, UserMixin):
     user_send = StringField(max_length=15)
     user_receive = StringField(max_length=15)
     amount = IntField(min_value=0)

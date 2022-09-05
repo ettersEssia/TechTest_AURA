@@ -60,13 +60,14 @@ def login():
         
     return render_template('login.html', form=form)
 
+# logout and clean the session
 @app.route('/logout/')
 @login_required
 def logout():
     logout_user()
     flash('you just disconnected')
     return redirect('/login')
-    
+
 @app.route('/registration/', methods=['GET', 'POST'])
 def register():
     user = None
@@ -81,23 +82,21 @@ def register():
             # user.password = form.password_hash.data
             user.save()
             login_user(user)
-        return redirect(url_for('dashboard'))
+            flash('User Sign Up Success')
+            return redirect(url_for('dashboard'))
 
     return render_template('register.html', form=form, user=user)
 
 @app.route('/change-password/', methods=['POST'])
 def changepwd():
-    print('#############')
     print(request.form['pwd'])
-    print('#############')
     current_user.password = request.form['pwd']
     current_user.save()
-    # user = session['user']
-    # user.password = request.form.pwd
-    # user.save
+    flash('User pasword changed Success')
     # we disconnect user so that he connects with the new password
     return redirect('/logout/')
 
+# once we sign up we will automaticly connected and our dashboard/profile will be displayed
 @app.route('/profile/')
 @login_required
 def dashboard():
@@ -110,6 +109,7 @@ def list_users():
     listUsers = Users.objects()
     return render_template('list-users.html', listUsers=listUsers)
 
+# Display Info for a specific user by clicking on his name in the list users page
 @app.route('/show-user-profile/<id>')
 def show_profile(id):
     user = Users.objects(_id=id).first()
@@ -117,6 +117,7 @@ def show_profile(id):
 
 @app.route('/send-money/', methods=['GET', 'POST'])
 @login_required
+# This method is trigged when a user click a "sen money" button 
 def send_money():
     if request.method == 'POST':
         print('hereeee')
@@ -135,7 +136,7 @@ def send_money():
         current_user.save()
 
         # Save the transaction on the DB table
-        transaction = Transactions(user_send=current_user.username, user_receive=current_user.username, amount=montant)
+        transaction = Transactions(user_send=current_user.username, user_receive=userReceive.username, amount=montant)
         transaction.save()
 
         # Update user session

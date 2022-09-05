@@ -3,12 +3,10 @@ from mongoengine import Document, StringField, IntField, ReferenceField, DateTim
 # For Hashing Passwords 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-import uuid
 
-# define my database tables
+# In this file we define our database tables
 
-# user table
-# transaction tale
+# transaction table
 class Transactions(Document, UserMixin):
     user_send = StringField(max_length=15)
     user_receive = StringField(max_length=15)
@@ -18,6 +16,7 @@ class Transactions(Document, UserMixin):
     def __repr__(self):
         return f'<user_send_id="{self.user_send_id}">'
 
+# user table
 class Users(Document, UserMixin):
     username = StringField(max_length=15, unique=True, required=True)
     email = StringField(unique=True, required=True)

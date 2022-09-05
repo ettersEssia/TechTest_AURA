@@ -1,3 +1,5 @@
+# In this file we define the app views
+
 from flask import Flask, render_template, redirect, url_for, flash, request
 from mongoengine import connect
 

@@ -1,3 +1,5 @@
+# In this file we define our application forms
+
 from flask_wtf import FlaskForm
 # if you submit with an empty textfield do somthing like a popup
 from wtforms.validators import DataRequired, EqualTo, Length
